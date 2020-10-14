@@ -52,10 +52,7 @@ def find_pattern(id_file, seen_tweets):
  asthma| cerebrovascular| cystic fibrosis| hypertension| high blood pressure| weak immune system|\
  neurologic conditions| dementia| liver disease| overweight| pregnancy| pregnant| pulmonary fibrosis|\
  lung| thalassemia| diabetes| diabetic)")
-
-
-
-
+    pattern_6 = re.compile("fever|dry cough|shortness of breath")
 
 
     patterns = [ pattern_1, pattern_2, pattern_3]
@@ -79,11 +76,12 @@ def find_pattern(id_file, seen_tweets):
                     # res_1 = pattern_1.findall(data['full_text'])
                     # res_2 = pattern_2.findall(data['full_text'])
                     # res_3 = pattern_3.findall(data['full_text'])
-                    res_3_1 = pattern_3_1.findall(data['full_text'])
+                    # res_3_1 = pattern_3_1.findall(data['full_text'])
                     # res_4 = pattern_4.findall(data['full_text'])
+                    res_6 = pattern_6.findall(data['full_text'])
 
 
-                    if len(res_3_1) != 0:
+                    if len(res_6) != 0:
                         write_to_file([{'id': data['id'],'id_str': data['id_str'], 'text': data['full_text'], 'created_at':data['created_at']}])
                         # write_to_file([data])
                         seen_tweets.add(original_data)
@@ -93,6 +91,6 @@ def find_pattern(id_file, seen_tweets):
 
 
 def write_to_file(myList):
-    with open('pattern3-1.txt', 'a') as f:
+    with open('pattern6.txt', 'a') as f:
         for item in myList:
             f.write("%s\n" % item)

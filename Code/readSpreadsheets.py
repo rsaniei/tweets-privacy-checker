@@ -17,6 +17,18 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 def read_spreadsheet(spreadsheet_id, range_name):
 
     creds = None
+    amb_count = 0
+    nhs_count = 0
+    hs_count = 0
+    tes_count = 0
+    sym_count = 0
+    dis_count = 0
+    type_oth_count = 0
+    ind_count = 0
+    fam_count = 0
+    sub_oth_count = 0
+
+
 
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -61,13 +73,17 @@ def read_spreadsheet(spreadsheet_id, range_name):
 
                     if (row[0] == "TRUE"):
                         my_dict["ambiguous"] = 'true'
+                        amb_count = amb_count + 1
 
                     else:
                         if (row[3] == row[4] and row[4] == row[5] and row[3]=="NHS"):
                             my_dict["physical_health_sensitivity"] = row[4]
+                            nhs_count = nhs_count + 1
+                            print(nhs_count)
                         else:
                             if(row[3] == row[4] and row[4] == row[5] and row[3]=="HS"):
                                 my_dict["physical_health_sensitivity"] = row[3]
+                                hs_count = hs_count + 1
                             else:
                                 my_dict["physical_health_sensitivity_1"] = row[3]
                                 my_dict["physical_health_sensitivity_2"] = row[4]
@@ -75,6 +91,13 @@ def read_spreadsheet(spreadsheet_id, range_name):
 
                             if (row[7] == row[8] and row[8]== row[9] and (len(row[7])) != 0):
                                 my_dict["type"] = row[7]
+                                # stats
+                                if "TES" in row[7]: tes_count = tes_count + 1
+                                if "DIS" in row[7]: dis_count = dis_count + 1
+                                if "SYM" in row[7]: sym_count = sym_count + 1
+                                if "OTH" in row[7]: type_oth_count = type_oth_count + 1
+
+
                             else:
                                 if len(row[7]) != 0: my_dict["type_1"] = row[7]
                                 if len(row[8]) != 0: my_dict["type_2"] = row[8]
@@ -82,6 +105,11 @@ def read_spreadsheet(spreadsheet_id, range_name):
 
                             if (row[11] == row[12] and row[12] == row[13] and len(row[11]) != 0):
                                 my_dict["subject"] = row[12]
+                                # stats
+                                if "IND" in row[11]: ind_count = ind_count + 1
+                                if "FAM" in row[11]: fam_count = fam_count + 1
+                                if "OTH" in row[11]: sub_oth_count = sub_oth_count + 1
+
                             else:
                                 if len(row[11]) != 0: my_dict["subject_1"] = row[11]
                                 if len(row[12]) != 0: my_dict["subject_2"] = row[12]
@@ -91,5 +119,19 @@ def read_spreadsheet(spreadsheet_id, range_name):
                     output.write((json.dumps(my_dict).encode('utf8') + b"\n").decode('utf8'))
     except Exception as e:
         print(e)
+
+    print("amb:", amb_count)
+    print("HS:", hs_count)
+    print("NHS:", nhs_count)
+
+    print("TES:", tes_count)
+    print("DIS:", dis_count)
+    print("SYM:", sym_count)
+    print("Other type",type_oth_count)
+
+    print("IND:", ind_count)
+    print("FAM:", fam_count)
+    print("Other subject", sub_oth_count)
+
 
     print('Read Sheet successfully')

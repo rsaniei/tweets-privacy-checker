@@ -1,7 +1,6 @@
-# Getting Started with Create React App
+# Webpage for the PHDD Corpus
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
+This is the webpage describing the PHDD Corpus, a corpus of physical health data disclosure on Twitter during COVID-19 pandemic.
 ## Available Scripts
 
 In the project directory, you can run:
